@@ -1,26 +1,24 @@
-import { combineReducers } from 'redux'
+import { 
+  ADD_NEW_POST, GET_POSTS, GET_CATEGORIES } from "../actions";
 
-import {
-    ADD_NEW_POST, GET_POSTS
-} from '../actions'
-
-function posts(state = { posts: [], categories: [] }, action) {
-    switch (action.type) {
-        case GET_POSTS:
-            return {
-                ...state,
-                posts: [...state.posts, action.posts]
-            }
-        case ADD_NEW_POST:
-            return {
-                ...state,
-                posts: [...state.posts, action.post]
-            }
-        default:
-            return state
-    }
+export default function (state = { posts: [], categories: [] }, action) {
+  switch (action.type) {
+    case GET_POSTS:
+      return {
+        ...state,
+        posts: [...state, action.posts]
+      };
+    case ADD_NEW_POST:
+      return {
+        ...state,
+        posts: [...state, action.post]
+      };
+    case GET_CATEGORIES:
+       return {
+        ...state,
+          categories: [...state, action.categories]
+        };
+    default:
+      return state;
+  }
 }
-
-export default combineReducers({
-    posts
-})
