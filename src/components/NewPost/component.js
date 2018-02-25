@@ -1,29 +1,54 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import uuidv1 from 'uuid/v1'
 
 import { addNewPost } from '../../actions'
 
 import { Form, Header, Input, TextArea } from 'semantic-ui-react'
 
+
+
 class NewPost extends React.Component {
-    state = { title: '', body: '', category: '' }
+    state = { title: '', body: '', author: '', category: '' }
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
     handleSubmit = (e) => {
         e.preventDefault()
-        const { title, body } = this.state
-        this.props.addPost({ title, body })
+        const { title, body, author, category } = this.state
+
+        const response = {
+            author: author === ''
+                ? 'Anonimous'
+                : author,
+            body,
+            category, 
+            id: uuidv1(),
+            title,
+            timestamp: new Date().getTime()
+        }
+        this.props.addPost(response)
     }
 
     render() {
-        const { title, body } = this.state
+        const { title, body, author } = this.state
+        const { categories } = this.props
+
+        const options = categories.reduce((acc, category) => {
+                return [...acc, {
+                    key: category.path,
+                    value: category.path,
+                    name: category.path,
+                    text: category.name
+                }]
+            },[])
+
         return (
             <div>
                 <Header as='h2'>
                     <Header.Content>New Post</Header.Content>
                 </Header>
-                <Form onSubmit={this.handleSubmit}>
+                <Form onSubmit={this.handleSubmit} size='mini'>
                     <Form.Input
                         control={Input}
                         placeholder='Title'
@@ -38,11 +63,30 @@ class NewPost extends React.Component {
                         value={body}
                         onChange={this.handleChange} />
 
+                    <Form.Group widths='equal'>
+                        <Form.Select
+                            name='category'
+                            placeholder='Categories'
+                            options={options}
+                            onChange={this.handleChange} />
+
+                        <Form.Input
+                            control={Input}
+                            placeholder='Author'
+                            name='author'
+                            value={author}
+                            onChange={this.handleChange} />
+                    </Form.Group>
+
                     <Form.Button content='Submit' />
                 </Form>
             </div>
         )
     }
+}
+
+const mapStateToProps = state => {
+    return state
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -51,4 +95,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(NewPost)
+export default connect(mapStateToProps, mapDispatchToProps)(NewPost)
