@@ -52,10 +52,14 @@ export default function (state = initialState, action) {
       };
 
     case UP_VOTE:
+      // let clonedPosts = [ ...state.posts] 
+      // clonedPosts.filter(post => post.id === action.id.id).map(post => post.voteScore++)
+      const list = state.posts.map(post => { post.id === action.id && post.voteScore++; return post })
       return {
-        ...state
+        ...state,
+        posts : list
       };
-    
+
     case DOWN_VOTE:
       return {
         ...state

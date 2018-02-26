@@ -1,9 +1,19 @@
 import React from 'react'
+import { connect } from 'react-redux'
+
 import { Comment, Icon } from 'semantic-ui-react'
+import { deleteComment, voteCommentDown, voteCommentUp } from '../../actions'
 
 import { dateHelper } from '../../utils/dateHelper'
 
-export default class PostComment extends React.Component {
+class PostComment extends React.Component {
+
+    onHandleAction({ action }, id) {
+        const { dislikeComment, likeComment, removeComment } = this.props
+        action === 'Delete Post' && removeComment(id)
+        action === 'Like' && likeComment(id)
+        action === 'Dislike' && dislikeComment(id)
+    }
 
     render() {
         const { author, body, timestamp, voteScore } = this.props.comment
@@ -13,7 +23,6 @@ export default class PostComment extends React.Component {
             { action: 'Dislike', name: 'thumbs down' },
             { action: 'Delete Comment', name: 'trash' }
         ]
-
         return (
             <Comment>
                 <Comment.Content>
@@ -25,7 +34,7 @@ export default class PostComment extends React.Component {
                             .map(
                                 (action, index) =>
                                     <Comment.Action key={index}>
-                                        <Icon name={action.name} alt={action.action} onClick={e => console.log(action.action)} />
+                                        {/* <Icon name={action.name} alt={action.action} onClick={e => this.onHandleAction(action, id)} /> */}
                                     </Comment.Action>)
                         }
                     </Comment.Actions>
@@ -35,3 +44,13 @@ export default class PostComment extends React.Component {
         )
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        removeComment: id => dispatch(deleteComment(id)),
+        likeComment: id => dispatch(voteCommentUp(id)),
+        dislikeComment: id => dispatch(voteCommentDown(id))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(PostComment)

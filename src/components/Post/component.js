@@ -61,6 +61,10 @@ class Post extends React.Component {
     }
 }
 
+const mapStateToProps = state => {
+    return state
+}
+
 const mapDispatchToProps = dispatch => {
     return {
         removePost: id => dispatch(deletePost(id)),
@@ -69,4 +73,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Post)
+export default connect(mapStateToProps, mapDispatchToProps)(Post)
