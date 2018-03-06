@@ -9,7 +9,6 @@ const Component = () => {
             <Container>
                 <Menu.Item as={Link} to='/' header>Readable</Menu.Item>
                 <Menu.Item as={Link} to='/CreateEdit' name='New Post' />
-                <Menu.Item name='friends' />
             </Container>
         </Menu>
     )

@@ -12,16 +12,18 @@ import {
   UP_VOTE,
   // VOTE_POST,
   // CHANGE_SORT,
+  GET_COMMENTS,
   // ADD_COMMENT,
   // DELETE_COMMENT,
   // EDIT_COMMENT,
-  // UPVOTE_COMMENT,
-  // DOWNVOTE_COMMENT
+  UPVOTE_COMMENT,
+  DOWNVOTE_COMMENT
 } from "../actions"
 
 const initialState = {
   posts: [],
-  categories: []
+  categories: [],
+  comments: []
 }
 
 export default function (state = initialState, action) {
@@ -52,17 +54,17 @@ export default function (state = initialState, action) {
       };
 
     case UP_VOTE:
-      // let clonedPosts = [ ...state.posts] 
-      // clonedPosts.filter(post => post.id === action.id.id).map(post => post.voteScore++)
-      const list = state.posts.map(post => { post.id === action.id && post.voteScore++; return post })
+      const postsUpVoted = state.posts.map(post => { post.id === action.id && post.voteScore++; return post })
       return {
         ...state,
-        posts : list
+        posts: postsUpVoted
       };
 
-    case DOWN_VOTE:
+      case DOWN_VOTE:
+      const postsDownVoted = state.posts.map(post => { post.id === action.id && post.voteScore--; return post })
       return {
-        ...state
+        ...state,
+        posts: postsDownVoted
       };
 
     case GET_CATEGORIES:
@@ -71,6 +73,25 @@ export default function (state = initialState, action) {
         categories: action.categories
       };
 
+    case GET_COMMENTS:
+      return {
+        ...state,
+        comments: state.comments.concat(action.comments)
+      }
+    
+    case UPVOTE_COMMENT:
+      const commentUpVoted = state.comments.map(comment => { comment.id === action.id && comment.voteScore++; return comment })
+      return {
+        ...state,
+        comments: commentUpVoted
+      };
+
+    case DOWNVOTE_COMMENT:
+    const commentDownVoted = state.comments.map(comment => { comment.id === action.id && comment.voteScore--; return comment })
+    return {
+      ...state,
+      comments: commentDownVoted
+    };
 
     default:
       return state;

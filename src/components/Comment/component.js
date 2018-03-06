@@ -16,8 +16,8 @@ class PostComment extends React.Component {
     }
 
     render() {
-        const { author, body, timestamp, voteScore } = this.props.comment
-
+        const { id, author, body, timestamp, voteScore } = this.props.comment
+        
         const actions = [
             { action: 'Like', name: 'thumbs up' },
             { action: 'Dislike', name: 'thumbs down' },
@@ -34,7 +34,7 @@ class PostComment extends React.Component {
                             .map(
                                 (action, index) =>
                                     <Comment.Action key={index}>
-                                        {/* <Icon name={action.name} alt={action.action} onClick={e => this.onHandleAction(action, id)} /> */}
+                                        <Icon name={action.name} alt={action.action} onClick={e => this.onHandleAction(action, id)} />
                                     </Comment.Action>)
                         }
                     </Comment.Actions>
@@ -45,6 +45,10 @@ class PostComment extends React.Component {
     }
 }
 
+const mapStateToProps = state => {
+    return state
+}
+
 const mapDispatchToProps = dispatch => {
     return {
         removeComment: id => dispatch(deleteComment(id)),
@@ -53,4 +57,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(PostComment)
+export default connect(mapStateToProps, mapDispatchToProps)(PostComment)

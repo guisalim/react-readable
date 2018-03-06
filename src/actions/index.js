@@ -13,6 +13,7 @@ export const DOWN_VOTE = "DOWN_VOTE"
 export const UP_VOTE = "UP_VOTE"
 export const VOTE_POST = "VOTE_POST"
 export const CHANGE_SORT = "CHANGE_SORT"
+export const GET_COMMENTS = "GET_COMMENTS"
 export const ADD_COMMENT = "ADD_COMMENT"
 export const DELETE_COMMENT = "DELETE_COMMENT"
 export const EDIT_COMMENT = "EDIT_COMMENT"
@@ -57,10 +58,9 @@ export function votePostUp(id) {
   }
 }
 
-const voteDownPostSucess = id => ({ type: DOWN_VOTE, id })
 export function votePostDown(id) {
   return async dispatch => {
-    dispatch(voteDownPostSucess(await API.votePost(id, 'downVote')))
+    API.votePost(id, 'downVote').then(dispatch({ type: DOWN_VOTE, id }))
   }
 }
 
@@ -71,27 +71,30 @@ export function getAllCategories() {
   }
 }
 
+export function getComments(id) {
+  return async dispatch => {
+    dispatch({type: GET_COMMENTS, comments: await API.getComments(id)})
+  }
+}
+
 const deleteCommentSucess = id => ({ type: DELETE_COMMENT, id })
 export function deleteComment(id) {
   // return async dispatch => {
   //   await API.deleteComment(id)
   //   dispatch(deleteCommentSucess(id))
   // }
+  console.log(deleteCommentSucess(id))
   return deleteCommentSucess(id)
 }
 
-const voteUpCommentSucess = id => ({ type: UPVOTE_COMMENT, id })
 export function voteCommentUp(id) {
-  // return async dispatch => {
-  //   dispatch(voteUpCommentSucess(await API.votePost(id, 'upVote')))
-  // }
-  return voteUpCommentSucess(id)
+  return async dispatch => {
+    API.voteComment(id, 'upVote').then(dispatch({ type: UPVOTE_COMMENT, id }))
+  }
 }
 
-const voteDownCommentSucess = id => ({ type: DOWNVOTE_COMMENT, id })
 export function voteCommentDown(id) {
-  // return async dispatch => {
-  //   dispatch(voteDownCommentSucess(await API.votePost(id, 'downVote')))
-  // }
-  return voteDownCommentSucess(id)
+  return async dispatch => {
+    API.voteComment(id, 'downVote').then(dispatch({ type: DOWNVOTE_COMMENT, id }))
+  }
 }

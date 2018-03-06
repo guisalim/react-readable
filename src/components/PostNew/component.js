@@ -22,7 +22,7 @@ class NewPost extends React.Component {
                 ? 'Anonimous'
                 : author,
             body,
-            category, 
+            category,
             id: uuidv1(),
             title,
             timestamp: new Date().getTime()
@@ -32,16 +32,16 @@ class NewPost extends React.Component {
 
     render() {
         const { title, body, author } = this.state
-        const { categories } = this.props
-
-        const options = categories.reduce((acc, category) => {
-                return [...acc, {
-                    key: category.path,
-                    value: category.path,
-                    name: category.path,
-                    text: category.name
-                }]
-            },[])
+        const { categories, filter } = this.props
+        const filteredCategories = filter === '' ? categories : categories.filter(category => category.path === filter)
+        const options = filteredCategories.reduce((acc, category) => {
+            return [...acc, {
+                key: category.path,
+                value: category.path,
+                name: category.path,
+                text: category.name
+            }]
+        }, [])
 
         return (
             <div>
@@ -85,7 +85,7 @@ class NewPost extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return state
 }
 
