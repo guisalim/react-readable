@@ -98,7 +98,7 @@ class Post extends React.Component {
                                         value={newCommentAuthor}
                                         onChange={this.onHandleChange} />
 
-                                    <Form.Button fluid content='Submit' />
+                                    <Form.Button fluid content='Submit New Comment' />
                                 </Form>
                             }
                         </Comment.Content>
