@@ -10,7 +10,7 @@ class PostComment extends React.Component {
 
     onHandleAction({ action }, id) {
         const { dislikeComment, likeComment, removeComment } = this.props
-        action === 'Delete Post' && removeComment(id)
+        action === 'Delete Comment' && removeComment(id)
         action === 'Like' && likeComment(id)
         action === 'Dislike' && dislikeComment(id)
     }

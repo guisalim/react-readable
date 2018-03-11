@@ -41,7 +41,7 @@ export function deletePost(id) {
     const res = await API.deletePost(id)
     res.ok
       ? dispatch(deletePostSucess(id))
-      : dispatch({ type: '' , id})
+      : dispatch({ type: '', id })
   }
 }
 
@@ -73,18 +73,20 @@ export function getAllCategories() {
 
 export function getComments(id) {
   return async dispatch => {
-    dispatch({type: GET_COMMENTS, comments: await API.getComments(id)})
+    dispatch({ type: GET_COMMENTS, comments: await API.getComments(id) })
   }
 }
 
-const deleteCommentSucess = id => ({ type: DELETE_COMMENT, id })
+export function addComment(comment) {
+  return async dispatch => {
+    dispatch({ type: ADD_COMMENT, comment: await API.addComment(comment) })
+  }
+}
+
 export function deleteComment(id) {
-  // return async dispatch => {
-  //   await API.deleteComment(id)
-  //   dispatch(deleteCommentSucess(id))
-  // }
-  console.log(deleteCommentSucess(id))
-  return deleteCommentSucess(id)
+  return async dispatch => {
+    API.deleteComment(id).then(dispatch({ type: DELETE_COMMENT, id }))
+  }
 }
 
 export function voteCommentUp(id) {

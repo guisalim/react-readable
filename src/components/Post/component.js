@@ -1,8 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import uuidv1 from 'uuid/v1'
 
 import { dateHelper } from '../../utils/dateHelper'
-import { deletePost, getComments, votePostDown, votePostUp } from '../../actions'
+import { addComment, deletePost, getComments, votePostDown, votePostUp } from '../../actions'
 
 import { Comment, Form, Icon, Input, Segment, TextArea } from 'semantic-ui-react'
 import { PostComment } from '../'
@@ -22,6 +24,7 @@ class Post extends React.Component {
         action === 'Delete Post' && removePost(id)
         action === 'Like' && likePost(id)
         action === 'Dislike' && dislikePost(id)
+        action === 'Delete' && removePost(id)
         action === 'Reply' && this.setState({ newCommentVisible: !newCommentVisible })
     }
 
@@ -29,8 +32,20 @@ class Post extends React.Component {
 
     onHandleSubmit = e => {
         e.preventDefault()
-        console.log(`Submited to the post - ${this.props.post.id} -\n>>>> ${this.state.newCommentBody}\n\n - by ${this.state.newCommentAuthor}`)
+        const { newCommentAuthor, newCommentBody } = this.state
+        const { newComment, post } = this.props
+
         this.setState({ newCommentAuthor: '', newCommentBody: '' })
+        const response = {
+            author: newCommentAuthor !== ''
+                ? newCommentAuthor
+                : 'Anonimous',
+            body: newCommentBody,
+            id: uuidv1(),
+            parentId: post.id,
+            timestamp: new Date().getTime()
+        }
+        newCommentBody !== '' && newComment(response)
     }
 
     render() {
@@ -40,11 +55,10 @@ class Post extends React.Component {
 
         const filteredComments = comments.filter(comment => comment.parentId === id)
 
-        const actions = [
+        const primaryActions = [
             { action: 'Like', name: 'thumbs up' },
             { action: 'Dislike', name: 'thumbs down' },
             { action: 'Reply', name: 'reply' },
-            { action: 'Edit', name: 'edit' },
             { action: 'Delete', name: 'trash' }
         ]
 
@@ -57,31 +71,25 @@ class Post extends React.Component {
                             <Comment.Metadata><div>{dateHelper(timestamp)}</div><div>{category}</div><div><Icon name='star' />{voteScore || 0}</div></Comment.Metadata>
                             <Comment.Text><p><b>{title}</b><br />{body}</p></Comment.Text>
                             <Comment.Actions>
-                                {
-                                    actions
-                                        .map(
-                                            (action, index) =>
-                                                <Comment.Action key={index}>
-                                                    <Icon name={action.name} alt={action.action} onClick={e => this.onHandleAction(action, id)} />
-                                                </Comment.Action>)
+                                {primaryActions.map((action, index) =>
+                                    <Comment.Action key={index} onClick={e => this.onHandleAction(action, id)} >
+                                        <Icon name={action.name} alt={action.action} />
+                                    </Comment.Action>)
                                 }
-                                {
-                                    filteredComments.length > 0 &&
+                                {<Comment.Action><Link to={`/CreateEdit/${id}`}><Icon name='edit' alt='Edit' /></Link></Comment.Action>}
+                                {filteredComments.length > 0 &&
                                     <Comment.Action onClick={e => this.setState({ commentsVisible: !commentsVisible })}>
-                                        <Icon
-                                            name='comment' alt='Comments'
-                                            disabled={commentsVisible} />
+                                        <Icon name='comment' alt='Comments' disabled={commentsVisible} />
                                     </Comment.Action>
                                 }
                             </Comment.Actions>
-                            {
-                                commentsVisible &&
+
+                            {commentsVisible &&
                                 <Comment.Group>{
                                     filteredComments.map(comment => !comment.deleted && <PostComment key={comment.id} comment={comment} />)}
-                                </Comment.Group>
-                            }
-                            {
-                                newCommentVisible &&
+                                </Comment.Group>}
+
+                            {newCommentVisible &&
                                 <Form onSubmit={this.onHandleSubmit} size='mini'>
                                     <br />
                                     <Form.Input
@@ -98,9 +106,8 @@ class Post extends React.Component {
                                         value={newCommentAuthor}
                                         onChange={this.onHandleChange} />
 
-                                    <Form.Button fluid content='Submit New Comment' />
-                                </Form>
-                            }
+                                    <Form.Button fluid size='mini' content='Submit New Comment' />
+                                </Form>}
                         </Comment.Content>
                     </Comment>
                 </Comment.Group>
@@ -115,6 +122,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        newComment: comment => dispatch(addComment(comment)),
         getComments: post => dispatch(getComments(post)),
         removePost: id => dispatch(deletePost(id)),
         likePost: id => dispatch(votePostUp(id)),

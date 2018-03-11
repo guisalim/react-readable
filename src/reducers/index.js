@@ -13,8 +13,8 @@ import {
   // VOTE_POST,
   // CHANGE_SORT,
   GET_COMMENTS,
-  // ADD_COMMENT,
-  // DELETE_COMMENT,
+  ADD_COMMENT,
+  DELETE_COMMENT,
   // EDIT_COMMENT,
   UPVOTE_COMMENT,
   DOWNVOTE_COMMENT
@@ -60,7 +60,7 @@ export default function (state = initialState, action) {
         posts: postsUpVoted
       };
 
-      case DOWN_VOTE:
+    case DOWN_VOTE:
       const postsDownVoted = state.posts.map(post => { post.id === action.id && post.voteScore--; return post })
       return {
         ...state,
@@ -74,11 +74,33 @@ export default function (state = initialState, action) {
       };
 
     case GET_COMMENTS:
+      let aux = state.comments
+      action.comments.map(comment => {
+        return aux = aux.filter(c => c.id !== comment.id)
+      });
+      
+      const result = aux.concat(action.comments)
+
       return {
         ...state,
-        comments: state.comments.concat(action.comments)
+        comments: result
       }
-    
+
+    case ADD_COMMENT:
+      const comments = state.comments.concat(action.comment)
+      return {
+        ...state,
+        comments
+      }
+
+    case DELETE_COMMENT:
+      const remainComments = state.comments.filter(comment => comment.id !== action.id)
+      
+      return {
+        ...state,
+        comments: remainComments
+      }
+
     case UPVOTE_COMMENT:
       const commentUpVoted = state.comments.map(comment => { comment.id === action.id && comment.voteScore++; return comment })
       return {
@@ -87,11 +109,11 @@ export default function (state = initialState, action) {
       };
 
     case DOWNVOTE_COMMENT:
-    const commentDownVoted = state.comments.map(comment => { comment.id === action.id && comment.voteScore--; return comment })
-    return {
-      ...state,
-      comments: commentDownVoted
-    };
+      const commentDownVoted = state.comments.map(comment => { comment.id === action.id && comment.voteScore--; return comment })
+      return {
+        ...state,
+        comments: commentDownVoted
+      };
 
     default:
       return state;

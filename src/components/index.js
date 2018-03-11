@@ -1,5 +1,4 @@
 export { default as PostComment } from './Comment/component'
-export { default as NewComment } from './CommentNew/component'
 export { default as Header } from './Header/component'
 export { default as NewPost } from './PostNew/component'
 export { default as Post } from './Post/component'

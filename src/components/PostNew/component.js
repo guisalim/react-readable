@@ -4,7 +4,7 @@ import uuidv1 from 'uuid/v1'
 
 import { addNewPost } from '../../actions'
 
-import { Form, Header, Input, TextArea } from 'semantic-ui-react'
+import { Form, Header, Input, Select, TextArea } from 'semantic-ui-react'
 
 
 
@@ -16,6 +16,7 @@ class NewPost extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault()
         const { title, body, author, category } = this.state
+        const { addPost } = this.props
 
         const response = {
             author: author === ''
@@ -27,7 +28,7 @@ class NewPost extends React.Component {
             title,
             timestamp: new Date().getTime()
         }
-        this.props.addPost(response)
+        category && addPost(response).then(this.setState({ title: '', body: '', author: '', category: '' }))
     }
 
     render() {
@@ -42,14 +43,14 @@ class NewPost extends React.Component {
                 text: category.name
             }]
         }, [])
-
         return (
             <div>
                 <Header as='h2'>
-                    <Header.Content>New Post</Header.Content>
+                    {/* <Header.Content>New Post</Header.Content> */}
                 </Header>
                 <Form onSubmit={this.handleSubmit} size='mini'>
                     <Form.Input
+                        required
                         control={Input}
                         placeholder='Title'
                         name='title'
@@ -57,6 +58,7 @@ class NewPost extends React.Component {
                         onChange={this.handleChange} />
 
                     <Form.Input
+                        required
                         control={TextArea}
                         placeholder='Description'
                         name='body'
@@ -64,7 +66,15 @@ class NewPost extends React.Component {
                         onChange={this.handleChange} />
 
                     <Form.Group widths='equal'>
-                        <Form.Select
+                        {/* <Form.Select
+                            name='category'
+                            placeholder='Categories'
+                            options={options}
+                            onChange={this.handleChange} /> */}
+
+                        <Form.Input
+                            control={Select}
+                            required
                             name='category'
                             placeholder='Categories'
                             options={options}
@@ -78,7 +88,7 @@ class NewPost extends React.Component {
                             onChange={this.handleChange} />
                     </Form.Group>
 
-                    <Form.Button content='Submit' />
+                    <Form.Button fluid size='mini' content='Submit' />
                 </Form>
             </div>
         )

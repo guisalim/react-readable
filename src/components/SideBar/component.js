@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom'
 
 import { Menu } from 'semantic-ui-react'
 
-
-
 class SideBar extends React.Component {
 
     state = { active: '' }
