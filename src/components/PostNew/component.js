@@ -35,14 +35,18 @@ class NewPost extends React.Component {
         const { title, body, author } = this.state
         const { categories, filter } = this.props
         const filteredCategories = filter === '' ? categories : categories.filter(category => category.path === filter)
-        const options = filteredCategories.reduce((acc, category) => {
+        const options = filteredCategories.reduce((acc, category, index) => {
             return [...acc, {
                 key: category.path,
                 value: category.path,
                 name: category.path,
-                text: category.name
+                text: category.name,
             }]
         }, [])
+        console.group()
+        console.log(filter)
+        console.log(options)
+        console.groupEnd()
         return (
             <div>
                 <Header as='h2'>
@@ -66,15 +70,15 @@ class NewPost extends React.Component {
                         onChange={this.handleChange} />
 
                     <Form.Group widths='equal'>
-                        {/* <Form.Select
+                        <Form.Select
+                            value={filter ? filter : null}
                             name='category'
                             placeholder='Categories'
                             options={options}
-                            onChange={this.handleChange} /> */}
+                            onChange={this.handleChange} />
 
                         <Form.Input
                             control={Select}
-                            required
                             name='category'
                             placeholder='Categories'
                             options={options}

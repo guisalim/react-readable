@@ -1,3 +1,3 @@
 export function dateHelper (timestamp) {
-    return new Date(timestamp).toDateString()
+  return new Date(timestamp).toDateString()
 }

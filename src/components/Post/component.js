@@ -76,7 +76,9 @@ class Post extends React.Component {
                                         <Icon name={action.name} alt={action.action} />
                                     </Comment.Action>)
                                 }
-                                {<Comment.Action><Link to={`/CreateEdit/${id}`}><Icon name='edit' alt='Edit' /></Link></Comment.Action>}
+                                {<Comment.Action as={Link} to={`/CreateEdit/${id}`}>
+                                    <Icon name='edit' alt='Edit' />
+                                </Comment.Action>}
                                 {filteredComments.length > 0 &&
                                     <Comment.Action onClick={e => this.setState({ commentsVisible: !commentsVisible })}>
                                         <Icon name='comment' alt='Comments' disabled={commentsVisible} />

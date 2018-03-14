@@ -7,8 +7,7 @@ import { Header } from '../../components'
 import { Root, CreateEdit } from '../../views'
 
 export default class App extends Component {
-
-  render() {
+  render () {
     return (
       <Container fluid>
         <Header />
@@ -22,6 +21,6 @@ export default class App extends Component {
           </Switch>
         </Container>
       </Container>
-    );
+    )
   }
 }
