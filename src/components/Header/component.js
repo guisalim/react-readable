@@ -8,7 +8,7 @@ const Component = () => {
         <Menu pointing secondary>
             <Container>
                 <Menu.Item as={Link} to='/' header>Readable</Menu.Item>
-                <Menu.Item as={Link} to='/CreateEdit' name='New Post' />
+                <Menu.Item as={Link} to='/CreateEdit/' name='New Post' />
             </Container>
         </Menu>
     )

@@ -1,102 +1,71 @@
-import * as API from "../utils/ReadableAPI"
+import * as API from '../helpers/api'
+import * as types from '../helpers/types'
 
-export const GET_POSTS = "GET_POSTS"
-export const GET_POST = "GET_POST"
-export const GET_CATEGORIES = "GET_CATEGORIES"
-export const GET_POST_CATEGORY = "GET_POST_CATEGORY"
-export const ADD_NEW_POST = "ADD_NEW_POST"
-export const EDIT_POST = "EDIT_POST"
-export const DELETE_POST = "DELETE_POST"
-export const REMOVE_POST = "REMOVE_POST"
-export const DELETE_POSTS = "DELETE_POSTS"
-export const DOWN_VOTE = "DOWN_VOTE"
-export const UP_VOTE = "UP_VOTE"
-export const VOTE_POST = "VOTE_POST"
-export const CHANGE_SORT = "CHANGE_SORT"
-export const GET_COMMENTS = "GET_COMMENTS"
-export const ADD_COMMENT = "ADD_COMMENT"
-export const DELETE_COMMENT = "DELETE_COMMENT"
-export const EDIT_COMMENT = "EDIT_COMMENT"
-export const UPVOTE_COMMENT = "UPVOTE_COMMENT"
-export const DOWNVOTE_COMMENT = "DOWNVOTE_COMMENT"
-export const SET_FILTER = "SET_FILTER"
+import { normalize } from 'normalizr'
+import { CategorySchema, CommentSchema, PostSchema } from '../helpers/schemas'
 
-const loadPostsSuccess = posts => ({ type: GET_POSTS, posts })
-export function getAllPosts() {
+// CATEGORIES
+export function getCategories() {
   return async dispatch => {
-    dispatch(loadPostsSuccess(await API.getAllPosts()))
+    const response = await API.getCategories()
+    const normalized = normalize(response.data.categories, [CategorySchema])
+    dispatch({ type: types.ENTITIES, payload: normalized.entities })
+    dispatch({ type: types.GET_CATEGORIES, payload: { categories: normalized.result } })
   }
 }
 
-const loadPostsCategorySuccess = posts => ({ type: GET_POST_CATEGORY, posts })
-export function getAllPostsForCategory(category) {
+
+// POSTS
+export function getPosts() {
   return async dispatch => {
-    dispatch(loadPostsCategorySuccess(await API.getAllPostsForCategory(category)))
+    const response = await API.getAllPosts()
+    const normalized = normalize(response.data, [PostSchema])
+    dispatch({ type: types.ENTITIES, payload: normalized.entities })
+    dispatch({ type: types.GET_POSTS, payload: { posts: normalized.result } })
   }
 }
 
-const deletePostSucess = id => ({ type: DELETE_POST, id })
-export function deletePost(id) {
+export function createPost(payload) {
   return async dispatch => {
-    const res = await API.deletePost(id)
-    res.ok
-      ? dispatch(deletePostSucess(id))
-      : dispatch({ type: '', id })
+    const response = await API.createPost(payload)
+    const normalized = normalize([response.data], [PostSchema])
+    dispatch({ type: types.ENTITIES, payload: normalized.entities })
+    dispatch({ type: types.CREATE_POST, payload: normalized.result[0] })
   }
 }
 
-const addPostSucess = post => ({ type: ADD_NEW_POST, post })
-export function addNewPost(post) {
+export function getPost(payload) {
   return async dispatch => {
-    dispatch(addPostSucess(await API.addNewPost(post)))
+    const response = await API.getPost(payload)
+    const normalized = normalize(response.data, PostSchema)
+    dispatch({ type: types.ENTITIES, payload: normalized.entities })
+    dispatch({ type: types.GET_POST, payload: { post: normalized.result } })
   }
 }
 
-export function votePostUp(id) {
+export function upVote(payload) {
   return async dispatch => {
-    API.votePost(id, 'upVote').then(dispatch({ type: UP_VOTE, id }))
+    const response = await API.upPost(payload)
+    const normalized = normalize(response.data, PostSchema)
+    dispatch({ type: types.ENTITIES, payload: normalized.entities })
   }
 }
 
-export function votePostDown(id) {
+export function downVote(payload) {
   return async dispatch => {
-    API.votePost(id, 'downVote').then(dispatch({ type: DOWN_VOTE, id }))
+    const response = await API.downPost(payload)
+    const normalized = normalize(response.data, PostSchema)
+    dispatch({ type: types.ENTITIES, payload: normalized.entities })
   }
 }
 
-const loadCategoriesSuccess = categories => ({ type: GET_CATEGORIES, categories })
-export function getAllCategories() {
-  return async dispatch => {
-    dispatch(loadCategoriesSuccess(await API.getAllCategories()))
-  }
-}
 
-export function getComments(id) {
+//COMMENTS
+export function getComments(payload) {
   return async dispatch => {
-    dispatch({ type: GET_COMMENTS, comments: await API.getComments(id) })
-  }
-}
-
-export function addComment(comment) {
-  return async dispatch => {
-    dispatch({ type: ADD_COMMENT, comment: await API.addComment(comment) })
-  }
-}
-
-export function deleteComment(id) {
-  return async dispatch => {
-    API.deleteComment(id).then(dispatch({ type: DELETE_COMMENT, id }))
-  }
-}
-
-export function voteCommentUp(id) {
-  return async dispatch => {
-    API.voteComment(id, 'upVote').then(dispatch({ type: UPVOTE_COMMENT, id }))
-  }
-}
-
-export function voteCommentDown(id) {
-  return async dispatch => {
-    API.voteComment(id, 'downVote').then(dispatch({ type: DOWNVOTE_COMMENT, id }))
+    const response = await API.getComments(payload)
+    const normalized = normalize(response.data, [CommentSchema])
+    dispatch({ type: types.ENTITIES, payload: normalized.entities })
+    dispatch({ type: types.GET_COMMENTS, payload: { comments: normalized.result } })
   }
 }

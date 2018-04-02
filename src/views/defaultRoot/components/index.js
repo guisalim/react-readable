@@ -1,0 +1,6 @@
+export { default as CommentDetail } from './commentDetail'
+export { default as CommentList } from './commentList'
+export { default as PostDetail } from './postDetail'
+export { default as PostList } from './postList'
+export { default as PostNew } from './postNew'
+export { default as Sidebar } from './sidebar'
