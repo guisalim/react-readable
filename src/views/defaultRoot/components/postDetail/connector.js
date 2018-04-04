@@ -1,10 +1,10 @@
 import { connect } from 'react-redux'
-import { downVote, upVote } from '../../../../actions'
+import { downPost, upPost } from '../../../../actions'
 
 const mapDispatchToProps = dispatch => {
     return {
-        downVote: (request) => dispatch(downVote(request)),
-        upVote: (request) => dispatch(upVote(request))
+        downVote: (request) => dispatch(downPost(request)),
+        upVote: (request) => dispatch(upPost(request))
     }
 }
 

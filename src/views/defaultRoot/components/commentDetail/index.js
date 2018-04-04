@@ -1,3 +1,3 @@
 import Component from './component'
-
-export default Component
+import connector from './connector'
+export default connector(Component)

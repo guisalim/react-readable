@@ -9,16 +9,15 @@ import { CommentList } from '../'
 const Component = ({ post, downVote, upVote }) => {
     const { author, body, category, commentCount, id, timestamp, title, voteScore } = post
     const avatar = faker.image.avatar()
-
     return (
-        <Segment>
+        <Segment color='black'>
             <Feed>
                 <Feed.Event>
                     <Feed.Label><img src={avatar} alt={id} /></Feed.Label>
                     <Feed.Content>
                         <Feed.Summary>
                             <Feed.User><b>{author}</b></Feed.User>
-                            <Feed.Date>{dateHelper(timestamp)} in <a>{category.name}</a></Feed.Date>
+                            <Feed.Date>{dateHelper(timestamp)} in <a>{category}</a></Feed.Date>
                         </Feed.Summary>
                         <Feed.Meta>
                             <Feed.Like>

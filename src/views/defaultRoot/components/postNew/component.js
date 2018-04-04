@@ -1,18 +1,23 @@
 import React from 'react'
 
-import { Form, Header, Input, Segment, TextArea } from 'semantic-ui-react'
+import { Form, Input, Segment, TextArea } from 'semantic-ui-react'
 
 class Component extends React.Component {
-    state = { title: 'Angular', body: 'It\'s not vue.js', author: 'Anonimous', category: 'udacity' }
+    state = { title: '', body: '', author: '', category: '' }
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
     handleSubmit = e => {
+        e.preventDefault()
+
         const { author, body, category, title } = this.state
         const { onHandleSubmit } = this.props
 
-        e.preventDefault()
-        const response = { author, body, category, title }
+        const response = {
+            author: author === '' ? 'Anonimous' : author,
+            body, category, title
+        }
+        
         onHandleSubmit(response)
         this.setState({ author: '', body: '', category: '', title: '' })
 
@@ -35,15 +40,12 @@ class Component extends React.Component {
         }, [])
 
         return (
-            <Segment>
-                <Header as='h2' dividing>
-                    <Header.Content>New Post</Header.Content>
-                </Header>
+            <Segment color='blue'>
                 <Form onSubmit={this.handleSubmit} size='mini'>
                     <Form.Input
                         required
                         control={Input}
-                        placeholder='Title'
+                        placeholder='What are you thinking about?'
                         name='title'
                         value={title}
                         onChange={this.handleChange} />
@@ -51,7 +53,7 @@ class Component extends React.Component {
                     <Form.Input
                         required
                         control={TextArea}
-                        placeholder='Description'
+                        placeholder='Tell me more about it...'
                         name='body'
                         value={body}
                         onChange={this.handleChange} />
@@ -60,19 +62,19 @@ class Component extends React.Component {
                         <Form.Select
                             value={filter ? filter : category}
                             name='category'
-                            placeholder='Categories'
+                            placeholder='What subject are you talking about?'
                             options={options}
                             onChange={this.handleChange} />
 
                         <Form.Input
                             control={Input}
-                            placeholder='Author'
+                            placeholder='Who are you?'
                             name='author'
                             value={author}
                             onChange={this.handleChange} />
                     </Form.Group>
 
-                    <Form.Button fluid size='mini' content='Submit' />
+                    <Form.Button fluid size='mini' content='Post!' />
                 </Form>
             </Segment>
         )

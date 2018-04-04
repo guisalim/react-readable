@@ -3,9 +3,10 @@ import { getCategories } from '../../../../actions'
 import { denormalize } from 'normalizr'
 import { CategorySchema } from '../../../../helpers/schemas'
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, { match }) => {
+    const filter = match.params.filter || ''
     const categories = denormalize(state.categories.categories, [CategorySchema], state.entities) || []
-    return { categories }
+    return { categories, filter }
 }
 
 const dispatchToProps = dispatch => {

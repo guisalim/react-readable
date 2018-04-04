@@ -7,10 +7,10 @@ const Component = props => {
     return (
         <Container fluid>
             <Grid stackable columns={2}>
-                <Grid.Column width={5}>
+                <Grid.Column width={4}>
                     <Card id={props.post}/>
                 </Grid.Column>
-                <Grid.Column width={11}>
+                <Grid.Column width={10}>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
@@ -19,6 +19,7 @@ const Component = props => {
                     pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
                     culpa qui officia deserunt mollit anim id est laborum.
                 </Grid.Column>
+                <Grid.Column width={2} />
             </Grid>
         </Container>
     )

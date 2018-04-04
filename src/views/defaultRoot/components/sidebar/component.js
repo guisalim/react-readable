@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
 
 class Component extends React.Component {
-    state = { active: '' }
+    state = { active: this.props.filter }
 
     handleActive(e, path) {
         this.setState({ active: path })

@@ -43,7 +43,7 @@ export function getPost(payload) {
   }
 }
 
-export function upVote(payload) {
+export function upPost(payload) {
   return async dispatch => {
     const response = await API.upPost(payload)
     const normalized = normalize(response.data, PostSchema)
@@ -51,7 +51,7 @@ export function upVote(payload) {
   }
 }
 
-export function downVote(payload) {
+export function downPost(payload) {
   return async dispatch => {
     const response = await API.downPost(payload)
     const normalized = normalize(response.data, PostSchema)
@@ -67,5 +67,21 @@ export function getComments(payload) {
     const normalized = normalize(response.data, [CommentSchema])
     dispatch({ type: types.ENTITIES, payload: normalized.entities })
     dispatch({ type: types.GET_COMMENTS, payload: { comments: normalized.result } })
+  }
+}
+
+export function upComment(payload) {
+  return async dispatch => {
+    const response = await API.upComment(payload)
+    const normalized = normalize(response.data, CommentSchema)
+    dispatch({ type: types.ENTITIES, payload: normalized.entities })
+  }
+}
+
+export function downComment(payload) {
+  return async dispatch => {
+    const response = await API.downComment(payload)
+    const normalized = normalize(response.data, CommentSchema)
+    dispatch({ type: types.ENTITIES, payload: normalized.entities })
   }
 }

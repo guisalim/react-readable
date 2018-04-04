@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { PostList, PostNew, Sidebar } from '../components'
-import { Divider, Grid } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 
 const Component = props => {
     return (
@@ -10,10 +10,10 @@ const Component = props => {
                 <Sidebar {...props} />
             </Grid.Column>
             <Grid.Column width={10}>
-                    <PostNew {...props} />
-                    <Divider />
-                    <PostList {...props} />
+                <PostNew {...props} />
+                <PostList {...props} />
             </Grid.Column>
+            <Grid.Column width={2} />
         </Grid >
     )
 }

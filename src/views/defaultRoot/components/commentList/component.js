@@ -9,7 +9,7 @@ const Component = props => {
         <Comment.Group>
             <Header as='h3' dividing>Comments</Header>
             <Comment.Group>
-                {comments && comments.map(comment => <CommentDetail key={comment.id} {...comment}/>)}
+                {comments && comments.map(comment => <CommentDetail key={comment.id} {...comment} />)}
             </Comment.Group>
         </Comment.Group>
     )

@@ -18,9 +18,9 @@ class Component extends React.Component {
     render() {
         const { posts, filter } = this.props
         const { orderBy } = this.state
-
+        
         const postsList = filter !== ''
-            ? posts.filter(post => post.category.name === filter)
+            ? posts.filter(post => post.category === filter)
             : posts
 
         const sortOptions = [
