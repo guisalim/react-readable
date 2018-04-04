@@ -5,7 +5,6 @@ import { dateHelper } from '../../../../helpers/dateHelper'
 import { Card, Icon, Image } from 'semantic-ui-react'
 
 const Component = props => {
-    console.log(props)
     const { author, commentCount, timestamp, title, voteScore } = props.post
     const avatar = faker.image.people()
     return (

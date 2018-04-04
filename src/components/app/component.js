@@ -15,6 +15,7 @@ const App = props => {
           <Grid stackable>
             <Grid.Column>
               <Switch>
+                {/* Inserir correções em caso de página sem filtro ou em case default */}
                 <Route exact path='/' component={DefaultRoot} />
                 <Route exact path='/CreateEdit/' component={CreateEdit} />
                 <Route exact path='/CreateEdit/:post' component={CreateEdit} />
